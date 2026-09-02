@@ -1,0 +1,6 @@
+{
+  "name": "SABHIRA FINANCE & ERP",
+  "description": "Sistem ERP & Keuangan Terpadu Bisnis Fashion Sabhira: Tracing Online Marketplace, Surat Jalan Serah Terima Paket & TTD Digital Kurir, Kontrol Resi Hilang, HPP Breakdown, Stok Multigudang, Kas/Bank, dan Laba Bersih.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
