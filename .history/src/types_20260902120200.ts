@@ -1,10 +1,4 @@
-export type UserRole =
-  | "owner"
-  | "finance"
-  | "admin"
-  | "gudang"
-  | "produksi"
-  | "marketing";
+export type UserRole = 'owner' | 'finance' | 'admin' | 'gudang' | 'produksi' | 'marketing';
 
 export interface UserSettings {
   defaultWarehouse: string;
@@ -49,13 +43,8 @@ export interface UserAccount {
 
 export interface StockAlert {
   id: string;
-  type:
-    | "CRITICAL_STOCK"
-    | "APPROACHING_MIN"
-    | "OUT_OF_STOCK"
-    | "RETUR_PENDING"
-    | "OPNAME_DISCREPANCY";
-  severity: "danger" | "warning" | "info";
+  type: 'CRITICAL_STOCK' | 'APPROACHING_MIN' | 'OUT_OF_STOCK' | 'RETUR_PENDING' | 'OPNAME_DISCREPANCY';
+  severity: 'danger' | 'warning' | 'info';
   skuId?: string;
   skuCode?: string;
   productName: string;
@@ -67,13 +56,7 @@ export interface StockAlert {
   targetRoles: UserRole[];
 }
 
-export type MarketplaceChannel =
-  | "Shopee"
-  | "TikTok Shop"
-  | "Tokopedia"
-  | "Lazada"
-  | "Offline/WhatsApp"
-  | "WhatsApp / Langsung";
+export type MarketplaceChannel = 'Shopee' | 'TikTok Shop' | 'Tokopedia' | 'Lazada' | 'Offline/WhatsApp' | 'WhatsApp / Langsung';
 
 export interface HppBreakdown {
   bahanKain: number; // Biaya kain per pcs
@@ -91,17 +74,9 @@ export interface ProductSKU {
   id: string;
   sku: string;
   name: string;
-  category:
-    | "Gamis"
-    | "Tunik"
-    | "Hijab"
-    | "Dress"
-    | "Kemeja"
-    | "Outer"
-    | "Mukena"
-    | "Bawahan";
+  category: 'Gamis' | 'Tunik' | 'Hijab' | 'Dress' | 'Kemeja' | 'Outer' | 'Mukena' | 'Bawahan';
   color: string;
-  size: "S" | "M" | "L" | "XL" | "XXL" | "All Size" | "Jumbo";
+  size: 'S' | 'M' | 'L' | 'XL' | 'XXL' | 'All Size' | 'Jumbo';
   sellingPrice: number;
   materialName: string; // e.g. "Rayon Twill Premium", "Ceruty Babydoll", "Silk Sutra"
   materialUsagePerPcs: number; // in meters/yard
@@ -113,38 +88,25 @@ export interface ProductSKU {
   stockMarketplace: number;
   minStockAlert: number;
   imageUrl?: string;
-  status: "active" | "archived" | "preorder";
+  status: 'active' | 'archived' | 'preorder';
   createdAt: string;
 }
 
-export type OrderStatus =
-  | "completed"
-  | "processing"
-  | "shipped"
-  | "returned"
-  | "cancelled";
-export type PayoutStatus = "settled" | "escrow" | "pending" | "deducted";
+export type OrderStatus = 'completed' | 'processing' | 'shipped' | 'returned' | 'cancelled';
+export type PayoutStatus = 'settled' | 'escrow' | 'pending' | 'deducted';
 
-export type ResiDeliveryStatus =
-  | "pending_pickup" // Menunggu Penjemputan Kurir / Siap Serah Terima
-  | "picked_up" // Diserahkan ke Kurir (Ada Bukti Surat Jalan)
-  | "in_transit" // Dalam Perjalanan (Sorting / Hub Ekspedisi)
-  | "out_for_delivery" // Sedang Diantar Kurir ke Pembeli
-  | "delivered" // Sukses Terkirim & Diterima
-  | "lost_or_unscanned"; // Peringatan: Resi Hilang / Belum Terscan Kurir > 24 Jam
+export type ResiDeliveryStatus = 
+  | 'pending_pickup'      // Menunggu Penjemputan Kurir / Siap Serah Terima
+  | 'picked_up'          // Diserahkan ke Kurir (Ada Bukti Surat Jalan)
+  | 'in_transit'         // Dalam Perjalanan (Sorting / Hub Ekspedisi)
+  | 'out_for_delivery'    // Sedang Diantar Kurir ke Pembeli
+  | 'delivered'          // Sukses Terkirim & Diterima
+  | 'lost_or_unscanned';  // Peringatan: Resi Hilang / Belum Terscan Kurir > 24 Jam
 
 export interface TrackingCheckpoint {
   timestamp: string;
   location: string;
-  status:
-    | "manifested"
-    | "picked_up"
-    | "in_transit"
-    | "sorting_hub"
-    | "out_for_delivery"
-    | "delivered"
-    | "failed_attempt"
-    | "lost_alert";
+  status: 'manifested' | 'picked_up' | 'in_transit' | 'sorting_hub' | 'out_for_delivery' | 'delivered' | 'failed_attempt' | 'lost_alert';
   title: string;
   description: string;
   courierOrHub?: string;
@@ -193,15 +155,8 @@ export interface MaterialStock {
   id: string;
   code: string;
   name: string;
-  type:
-    | "Kain"
-    | "Benang"
-    | "Kancing"
-    | "Resleting"
-    | "Label"
-    | "Hangtag"
-    | "Packaging";
-  unit: "meter" | "yard" | "roll" | "pcs" | "lusin" | "pack";
+  type: 'Kain' | 'Benang' | 'Kancing' | 'Resleting' | 'Label' | 'Hangtag' | 'Packaging';
+  unit: 'meter' | 'yard' | 'roll' | 'pcs' | 'lusin' | 'pack';
   currentStock: number;
   minStock: number;
   avgCostPerUnit: number;
@@ -209,16 +164,16 @@ export interface MaterialStock {
   lastUpdated: string;
 }
 
-export type InventoryTransactionType =
-  | "PEMBELIAN_BAHAN"
-  | "BARANG_MASUK_PRODUKSI"
-  | "BARANG_MASUK_PEMBELIAN"
-  | "BARANG_KELUAR_PENJUALAN"
-  | "MUTASI_GUDANG"
-  | "RETUR_MASUK"
-  | "RETUR_REJECT"
-  | "PENYESUAIAN_MANUAL"
-  | "STOCK_OPNAME_ADJUSTMENT";
+export type InventoryTransactionType = 
+  | 'PEMBELIAN_BAHAN' 
+  | 'BARANG_MASUK_PRODUKSI' 
+  | 'BARANG_MASUK_PEMBELIAN'
+  | 'BARANG_KELUAR_PENJUALAN' 
+  | 'MUTASI_GUDANG' 
+  | 'RETUR_MASUK' 
+  | 'RETUR_REJECT'
+  | 'PENYESUAIAN_MANUAL'
+  | 'STOCK_OPNAME_ADJUSTMENT';
 
 export interface InventoryTransaction {
   id: string;
@@ -251,17 +206,11 @@ export interface StockOpnameRecord {
   discrepancy: number; // physicalStock - systemStock
   discrepancyValue: number; // discrepancy * hppFinal
   reason: string;
-  status: "draft" | "approved" | "rejected";
+  status: 'draft' | 'approved' | 'rejected';
   auditorName: string;
 }
 
-export type SpkStatus =
-  | "draft"
-  | "cutting"
-  | "sewing"
-  | "finishing_qc"
-  | "completed"
-  | "cancelled";
+export type SpkStatus = 'draft' | 'cutting' | 'sewing' | 'finishing_qc' | 'completed' | 'cancelled';
 
 export interface ProductionPlan {
   id: string;
@@ -291,14 +240,7 @@ export interface ProductionPlan {
   createdAt: string;
 }
 
-export type FinancialAccountType =
-  | "kas_tunai"
-  | "bank_bca"
-  | "bank_mandiri"
-  | "bank_bri"
-  | "escrow_shopee"
-  | "escrow_tiktok"
-  | "escrow_tokopedia";
+export type FinancialAccountType = 'kas_tunai' | 'bank_bca' | 'bank_mandiri' | 'bank_bri' | 'escrow_shopee' | 'escrow_tiktok' | 'escrow_tokopedia';
 
 export interface FinancialAccount {
   id: string;
@@ -309,26 +251,26 @@ export interface FinancialAccount {
   balance: number;
 }
 
-export type CashFlowCategory =
-  | "PENJUALAN_MARKETPLACE_CAIR"
-  | "PENJUALAN_OFFLINE"
-  | "MODAL_TAMBAHAN"
-  | "PEMBAYARAN_PIUTANG"
-  | "PEMBELIAN_KAIN_BAHAN"
-  | "BIAYA_JAHIT_PRODUKSI"
-  | "GAJI_KARYAWAN"
-  | "MARKETING_ADS"
-  | "BIAYA_OPERASIONAL_LISTRIK_SEWA"
-  | "BIAYA_PACKAGING"
-  | "PEMBAYARAN_HUTANG"
-  | "PENARIKAN_OWNER_PRIVE"
-  | "BIAYA_LAINNYA";
+export type CashFlowCategory = 
+  | 'PENJUALAN_MARKETPLACE_CAIR'
+  | 'PENJUALAN_OFFLINE'
+  | 'MODAL_TAMBAHAN'
+  | 'PEMBAYARAN_PIUTANG'
+  | 'PEMBELIAN_KAIN_BAHAN'
+  | 'BIAYA_JAHIT_PRODUKSI'
+  | 'GAJI_KARYAWAN'
+  | 'MARKETING_ADS'
+  | 'BIAYA_OPERASIONAL_LISTRIK_SEWA'
+  | 'BIAYA_PACKAGING'
+  | 'PEMBAYARAN_HUTANG'
+  | 'PENARIKAN_OWNER_PRIVE'
+  | 'BIAYA_LAINNYA';
 
 export interface CashTransaction {
   id: string;
   transactionNumber: string;
   date: string;
-  type: "in" | "out";
+  type: 'in' | 'out';
   category: CashFlowCategory;
   amount: number;
   accountId: string;
@@ -341,14 +283,14 @@ export interface CashTransaction {
 
 export interface DebtPayable {
   id: string;
-  type: "hutang" | "piutang";
+  type: 'hutang' | 'piutang';
   referenceNo: string;
   entityName: string; // Supplier / Reseller / Rekanan
   totalAmount: number;
   paidAmount: number;
   remainingAmount: number;
   dueDate: string;
-  status: "lunas" | "belum_lunas" | "jatuh_tempo";
+  status: 'lunas' | 'belum_lunas' | 'jatuh_tempo';
   notes: string;
 }
 
@@ -374,13 +316,11 @@ export interface SuratJalanPackageItem {
   totalQty: number;
   itemsSummary: string;
   packageWeightKg?: number;
-  scanStatus: "scanned" | "pending_scan" | "missing_alert";
+  scanStatus: 'scanned' | 'pending_scan' | 'missing_alert';
   scannedAt?: string;
 }
 
-export type SuratJalanType =
-  | "pengantaran_paket_marketplace"
-  | "distribusi_internal";
+export type SuratJalanType = 'pengantaran_paket_marketplace' | 'distribusi_internal';
 
 export interface SuratJalan {
   id: string;
@@ -416,5 +356,5 @@ export interface SuratJalan {
   totalPcs: number;
   totalKoli?: number;
   catatan: string;
-  status: "draft" | "dikirim" | "diterima" | "dibatalkan";
+  status: 'draft' | 'dikirim' | 'diterima' | 'dibatalkan';
 }

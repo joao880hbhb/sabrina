@@ -45,7 +45,6 @@ interface AppContextType {
     userId: string,
     permissions: UserAccount["permissions"],
   ) => void;
-  updateUserPassword: (userId: string, password: string) => void;
   updateUserSettings: (userId: string, settings: Partial<UserSettings>) => void;
   addUser: (user: Omit<UserAccount, "id">) => void;
 
@@ -473,14 +472,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   ) => {
     setUsers((prev) =>
       prev.map((u) => (u.id === userId ? { ...u, permissions } : u)),
-    );
-  };
-
-  const updateUserPassword = (userId: string, password: string) => {
-    setUsers((prev) =>
-      prev.map((u) =>
-        u.id === userId ? { ...u, password: password || u.password } : u,
-      ),
     );
   };
 
@@ -1680,7 +1671,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
         switchUserRole,
         loginWithEmailPassword,
         updateUserPermissions,
-        updateUserPassword,
         updateUserSettings,
         addUser,
         products,

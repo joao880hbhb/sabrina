@@ -34,7 +34,6 @@ export const UserManagement: React.FC = () => {
     loginWithEmailPassword,
     addUser,
     updateUserPermissions,
-    updateUserPassword,
     updateUserSettings,
   } = useApp();
 
@@ -66,11 +65,9 @@ export const UserManagement: React.FC = () => {
   const [newUserData, setNewUserData] = useState({
     name: "",
     email: "",
-    password: "",
     phone: "",
     role: "admin" as UserRole,
   });
-  const [accountPassword, setAccountPassword] = useState("");
 
   // Permission Matrix Definition
   const permissionsMatrix = [
@@ -165,7 +162,6 @@ export const UserManagement: React.FC = () => {
     addUser({
       name: newUserData.name,
       email: newUserData.email,
-      password: newUserData.password,
       phone: newUserData.phone || "0812-0000-0000",
       role: newUserData.role,
       avatar:
@@ -202,13 +198,7 @@ export const UserManagement: React.FC = () => {
     });
 
     setShowAddUserModal(false);
-    setNewUserData({
-      name: "",
-      email: "",
-      password: "",
-      phone: "",
-      role: "admin",
-    });
+    setNewUserData({ name: "", email: "", phone: "", role: "admin" });
     alert(
       "User staff baru berhasil ditambahkan beserta settingan awal profil!",
     );
@@ -216,7 +206,6 @@ export const UserManagement: React.FC = () => {
 
   const openSettingsModal = (user: UserAccount) => {
     setSelectedUserForEdit(user);
-    setAccountPassword(user.password || "");
     if (user.settings) {
       setSettingsForm(user.settings);
     } else {
@@ -237,9 +226,6 @@ export const UserManagement: React.FC = () => {
   const handleSaveSettings = (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedUserForEdit) return;
-    if (accountPassword.trim()) {
-      updateUserPassword(selectedUserForEdit.id, accountPassword.trim());
-    }
     updateUserSettings(selectedUserForEdit.id, settingsForm);
     setShowEditSettingsModal(false);
     alert(`Settingan akun ${selectedUserForEdit.name} berhasil disimpan!`);
@@ -489,10 +475,7 @@ export const UserManagement: React.FC = () => {
                     type="email"
                     value={loginForm.email}
                     onChange={(e) =>
-                      setLoginForm((prev) => ({
-                        ...prev,
-                        email: e.target.value,
-                      }))
+                      setLoginForm((prev) => ({ ...prev, email: e.target.value }))
                     }
                     className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-3 text-sm text-slate-800 outline-none transition focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-100"
                     placeholder="contoh: finance@sabhirafashion.id"
@@ -511,10 +494,7 @@ export const UserManagement: React.FC = () => {
                     type="password"
                     value={loginForm.password}
                     onChange={(e) =>
-                      setLoginForm((prev) => ({
-                        ...prev,
-                        password: e.target.value,
-                      }))
+                      setLoginForm((prev) => ({ ...prev, password: e.target.value }))
                     }
                     className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-3 text-sm text-slate-800 outline-none transition focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-100"
                     placeholder="Masukkan password"
@@ -540,10 +520,7 @@ export const UserManagement: React.FC = () => {
                       key={u.id}
                       type="button"
                       onClick={() =>
-                        setLoginForm({
-                          email: u.email,
-                          password: u.password || "",
-                        })
+                        setLoginForm({ email: u.email, password: u.password || "" })
                       }
                       className="rounded-full border border-indigo-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-indigo-700 transition hover:border-indigo-300 hover:bg-indigo-100"
                     >
@@ -782,19 +759,6 @@ export const UserManagement: React.FC = () => {
 
               <div>
                 <label className="block font-semibold text-slate-700 mb-1">
-                  Password Login
-                </label>
-                <input
-                  type="password"
-                  value={accountPassword}
-                  onChange={(e) => setAccountPassword(e.target.value)}
-                  placeholder="Kosongkan jika tidak ingin ubah"
-                  className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl"
-                />
-              </div>
-
-              <div>
-                <label className="block font-semibold text-slate-700 mb-1">
                   Safety Stock Buffer Tambahan (%)
                 </label>
                 <div className="flex items-center gap-3">
@@ -959,22 +923,6 @@ export const UserManagement: React.FC = () => {
                   value={newUserData.email}
                   onChange={(e) =>
                     setNewUserData({ ...newUserData, email: e.target.value })
-                  }
-                  className="w-full px-3 py-1.5 text-xs border border-slate-200 rounded-xl"
-                />
-              </div>
-
-              <div>
-                <label className="block font-semibold text-slate-700 mb-1">
-                  Password Login
-                </label>
-                <input
-                  type="password"
-                  required
-                  placeholder="Masukkan password akun"
-                  value={newUserData.password}
-                  onChange={(e) =>
-                    setNewUserData({ ...newUserData, password: e.target.value })
                   }
                   className="w-full px-3 py-1.5 text-xs border border-slate-200 rounded-xl"
                 />

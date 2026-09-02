@@ -34,7 +34,6 @@ export const UserManagement: React.FC = () => {
     loginWithEmailPassword,
     addUser,
     updateUserPermissions,
-    updateUserPassword,
     updateUserSettings,
   } = useApp();
 
@@ -66,11 +65,9 @@ export const UserManagement: React.FC = () => {
   const [newUserData, setNewUserData] = useState({
     name: "",
     email: "",
-    password: "",
     phone: "",
     role: "admin" as UserRole,
   });
-  const [accountPassword, setAccountPassword] = useState("");
 
   // Permission Matrix Definition
   const permissionsMatrix = [
@@ -165,7 +162,6 @@ export const UserManagement: React.FC = () => {
     addUser({
       name: newUserData.name,
       email: newUserData.email,
-      password: newUserData.password,
       phone: newUserData.phone || "0812-0000-0000",
       role: newUserData.role,
       avatar:
@@ -202,13 +198,7 @@ export const UserManagement: React.FC = () => {
     });
 
     setShowAddUserModal(false);
-    setNewUserData({
-      name: "",
-      email: "",
-      password: "",
-      phone: "",
-      role: "admin",
-    });
+    setNewUserData({ name: "", email: "", phone: "", role: "admin" });
     alert(
       "User staff baru berhasil ditambahkan beserta settingan awal profil!",
     );
@@ -216,7 +206,6 @@ export const UserManagement: React.FC = () => {
 
   const openSettingsModal = (user: UserAccount) => {
     setSelectedUserForEdit(user);
-    setAccountPassword(user.password || "");
     if (user.settings) {
       setSettingsForm(user.settings);
     } else {
@@ -237,9 +226,6 @@ export const UserManagement: React.FC = () => {
   const handleSaveSettings = (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedUserForEdit) return;
-    if (accountPassword.trim()) {
-      updateUserPassword(selectedUserForEdit.id, accountPassword.trim());
-    }
     updateUserSettings(selectedUserForEdit.id, settingsForm);
     setShowEditSettingsModal(false);
     alert(`Settingan akun ${selectedUserForEdit.name} berhasil disimpan!`);
@@ -450,117 +436,6 @@ export const UserManagement: React.FC = () => {
               </div>
             );
           })}
-        </div>
-      )}
-
-      {showLoginModal && loginTargetUser && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl">
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-indigo-600">
-                  Demo Login
-                </p>
-                <h2 className="mt-2 text-2xl font-black text-slate-900">
-                  Masuk ke Akun {loginTargetUser.name}
-                </h2>
-              </div>
-              <button
-                type="button"
-                onClick={() => {
-                  setShowLoginModal(false);
-                  setLoginTargetUser(null);
-                  setLoginError("");
-                }}
-                className="rounded-full bg-slate-100 p-2 text-slate-500 transition hover:bg-slate-200 hover:text-slate-700"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
-
-            <form onSubmit={handleLoginSubmit} className="mt-6 space-y-4">
-              <div className="space-y-2">
-                <label className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Email
-                </label>
-                <div className="relative">
-                  <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-                  <input
-                    type="email"
-                    value={loginForm.email}
-                    onChange={(e) =>
-                      setLoginForm((prev) => ({
-                        ...prev,
-                        email: e.target.value,
-                      }))
-                    }
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-3 text-sm text-slate-800 outline-none transition focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-100"
-                    placeholder="contoh: finance@sabhirafashion.id"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Password
-                </label>
-                <div className="relative">
-                  <Lock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-                  <input
-                    type="password"
-                    value={loginForm.password}
-                    onChange={(e) =>
-                      setLoginForm((prev) => ({
-                        ...prev,
-                        password: e.target.value,
-                      }))
-                    }
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-3 text-sm text-slate-800 outline-none transition focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-100"
-                    placeholder="Masukkan password"
-                    required
-                  />
-                </div>
-              </div>
-
-              {loginError && (
-                <div className="rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 text-xs text-rose-700">
-                  {loginError}
-                </div>
-              )}
-
-              <div className="rounded-2xl border border-indigo-100 bg-indigo-50 p-3">
-                <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-indigo-700">
-                  <Sparkles className="h-3.5 w-3.5" />
-                  Akun demo cepat
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {users.map((u) => (
-                    <button
-                      key={u.id}
-                      type="button"
-                      onClick={() =>
-                        setLoginForm({
-                          email: u.email,
-                          password: u.password || "",
-                        })
-                      }
-                      className="rounded-full border border-indigo-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-indigo-700 transition hover:border-indigo-300 hover:bg-indigo-100"
-                    >
-                      {u.role}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-4 py-3 text-sm font-bold text-white shadow-lg shadow-indigo-500/20 transition hover:from-indigo-700 hover:to-violet-700"
-              >
-                Masuk ke Dashboard
-              </button>
-            </form>
-          </div>
         </div>
       )}
 
@@ -782,19 +657,6 @@ export const UserManagement: React.FC = () => {
 
               <div>
                 <label className="block font-semibold text-slate-700 mb-1">
-                  Password Login
-                </label>
-                <input
-                  type="password"
-                  value={accountPassword}
-                  onChange={(e) => setAccountPassword(e.target.value)}
-                  placeholder="Kosongkan jika tidak ingin ubah"
-                  className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl"
-                />
-              </div>
-
-              <div>
-                <label className="block font-semibold text-slate-700 mb-1">
                   Safety Stock Buffer Tambahan (%)
                 </label>
                 <div className="flex items-center gap-3">
@@ -959,22 +821,6 @@ export const UserManagement: React.FC = () => {
                   value={newUserData.email}
                   onChange={(e) =>
                     setNewUserData({ ...newUserData, email: e.target.value })
-                  }
-                  className="w-full px-3 py-1.5 text-xs border border-slate-200 rounded-xl"
-                />
-              </div>
-
-              <div>
-                <label className="block font-semibold text-slate-700 mb-1">
-                  Password Login
-                </label>
-                <input
-                  type="password"
-                  required
-                  placeholder="Masukkan password akun"
-                  value={newUserData.password}
-                  onChange={(e) =>
-                    setNewUserData({ ...newUserData, password: e.target.value })
                   }
                   className="w-full px-3 py-1.5 text-xs border border-slate-200 rounded-xl"
                 />

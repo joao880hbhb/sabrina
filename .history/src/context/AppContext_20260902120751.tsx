@@ -45,7 +45,6 @@ interface AppContextType {
     userId: string,
     permissions: UserAccount["permissions"],
   ) => void;
-  updateUserPassword: (userId: string, password: string) => void;
   updateUserSettings: (userId: string, settings: Partial<UserSettings>) => void;
   addUser: (user: Omit<UserAccount, "id">) => void;
 
@@ -189,31 +188,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
       const saved = localStorage.getItem(`${STORAGE_KEY_PREFIX}users`);
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          return parsed.map((user: Partial<UserAccount>) => {
-            const fallbackUser = INITIAL_USERS.find(
-              (initialUser) =>
-                initialUser.email.trim().toLowerCase() ===
-                String(user.email ?? "")
-                  .trim()
-                  .toLowerCase(),
-            );
-
-            return {
-              ...fallbackUser,
-              ...user,
-              password: user.password ?? fallbackUser?.password ?? "",
-              permissions:
-                user.permissions ??
-                fallbackUser?.permissions ??
-                INITIAL_USERS[0].permissions,
-              settings:
-                user.settings ??
-                fallbackUser?.settings ??
-                INITIAL_USERS[0].settings,
-            } as UserAccount;
-          });
-        }
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
       }
     } catch (e) {
       console.warn("Failed to parse users from localStorage", e);
@@ -449,18 +424,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
     });
 
     if (!matchedUser) {
-      const fallbackUser = INITIAL_USERS.find(
-        (initialUser) =>
-          initialUser.email.trim().toLowerCase() === normalizedEmail &&
-          initialUser.password === password,
-      );
-
-      if (!fallbackUser) {
-        return null;
-      }
-
-      setCurrentRole(fallbackUser.role);
-      return fallbackUser;
+      return null;
     }
 
     setCurrentRole(matchedUser.role);
@@ -473,14 +437,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   ) => {
     setUsers((prev) =>
       prev.map((u) => (u.id === userId ? { ...u, permissions } : u)),
-    );
-  };
-
-  const updateUserPassword = (userId: string, password: string) => {
-    setUsers((prev) =>
-      prev.map((u) =>
-        u.id === userId ? { ...u, password: password || u.password } : u,
-      ),
     );
   };
 
@@ -1680,7 +1636,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
         switchUserRole,
         loginWithEmailPassword,
         updateUserPermissions,
-        updateUserPassword,
         updateUserSettings,
         addUser,
         products,
