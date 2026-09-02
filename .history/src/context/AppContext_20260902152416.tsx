@@ -180,28 +180,10 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 const STORAGE_KEY_PREFIX = "sabhira_erp_v2_";
-const STORAGE_VERSION = "3.0"; // Increment this to clear all localStorage
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  // Check and initialize storage version on mount
-  React.useEffect(() => {
-    const currentVersion = localStorage.getItem(
-      `${STORAGE_KEY_PREFIX}version`
-    );
-    if (currentVersion !== STORAGE_VERSION) {
-      // Version mismatch - clear all old data
-      const keys = Object.keys(localStorage).filter((key) =>
-        key.startsWith(STORAGE_KEY_PREFIX)
-      );
-      keys.forEach((key) => localStorage.removeItem(key));
-      localStorage.setItem(`${STORAGE_KEY_PREFIX}version`, STORAGE_VERSION);
-      // Reload page to apply fresh start
-      window.location.reload();
-    }
-  }, []);
-
   // Load state from localStorage or initialData
   const [users, setUsers] = useState<UserAccount[]>(() => {
     try {

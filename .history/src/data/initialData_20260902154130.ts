@@ -268,3 +268,15 @@ export const INITIAL_CASH_TRANSACTIONS: CashTransaction[] = [];
 export const INITIAL_DEBTS: DebtPayable[] = [];
 
 export const INITIAL_SURAT_JALAN: SuratJalan[] = [];
+        size: "All Size",
+        quantity: 5,
+        unit: "pcs",
+        keterangan: "Pouch box exclusive",
+      },
+    ],
+    totalPcs: 15,
+    catatan:
+      "Harap dijaga jangan tertindih barang basah/berat. Simpan di area sejuk.",
+    status: "dikirim",
+  },
+];
